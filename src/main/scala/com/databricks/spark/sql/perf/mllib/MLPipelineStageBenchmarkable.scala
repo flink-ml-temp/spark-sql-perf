@@ -35,6 +35,13 @@ class MLPipelineStageBenchmarkable(
       trainingData = test.trainingDataSet(param)
       trainingData.cache()
       trainingData.count()
+
+      // Add dummy map.
+      val testSchema = testData.schema
+      val trainSchema = trainingData.schema
+      trainingData = trainingData.sparkSession.createDataFrame(trainingData.rdd.map(x => x), trainSchema)
+      testData = testData.sparkSession.createDataFrame(testData.rdd.map(x => x), testSchema)
+
     } catch {
       case NonFatal(e) =>
         println(s"$this error in beforeBenchmark: ${e.getStackTraceString}")
