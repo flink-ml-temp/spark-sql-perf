@@ -81,7 +81,9 @@ object MLLib {
   def run(yamlFile: String = null, yamlConfig: String = null): DataFrame = {
     logger.info("Starting run")
     val conf = getConf(yamlFile, yamlConfig)
-    val sparkConf = new SparkConf().setAppName("MLlib QA").setMaster("local[2]")
+    val sparkConf = new SparkConf()
+      .setAppName("MLlib QA")
+      .setMaster("spark://localhost:7077")
     val sc = SparkContext.getOrCreate(sparkConf)
     sc.setLogLevel("INFO")
     val b = new com.databricks.spark.sql.perf.mllib.MLLib()
